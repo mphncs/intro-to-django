@@ -1,6 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.forms import inlineformset_factory
 # Create your views here.
 from .models import *
+from .forms import OrderForm
 
 
 def home(request):
@@ -38,3 +40,47 @@ def customer(request, primary_key):
     context = {'id_customer': id_customer, 'orders': orders, 'num_orders': num_orders}
 
     return render(request, 'accounts/customer.html', context=context)
+
+
+def create_order(request, primary_key):
+    OrderFormSet = inlineformset_factory(Customer, Order, fields=('product', 'status'), extra=5)
+    id_customer = Customer.objects.get(id=primary_key)
+    # form = OrderForm(initial={'customer': id_customer})
+    formset = OrderFormSet(queryset=Order.objects.none(), instance=id_customer)
+
+    if request.method == 'POST':
+        formset = OrderFormSet(request.POST, instance=id_customer)
+        if formset.is_valid():
+            form.save()
+            return redirect('/')
+
+    context = {'formset': formset}
+
+    return render(request, 'accounts/order_form.html', context=context)
+
+
+def update_order(request, primary_key):
+    id_order = Order.objects.get(id=primary_key)
+    form = OrderForm(instance=id_order)
+
+    if request.method == 'POST':
+        form = OrderForm(request.POST, instance=id_order)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+
+    context = {'form': form}
+
+    return render(request, 'accounts/order_form.html', context=context)
+
+
+def delete_order(request, primary_key):
+    item = Order.objects.get(id=primary_key)
+
+    if request.method == 'POST':
+        item.delete()
+        return redirect('/')
+
+    context = {'item': item}
+
+    return render(request, 'accounts/delete_order.html', context=context)
