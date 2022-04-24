@@ -16,6 +16,7 @@ class OrderForm(ModelForm):
     class Meta:
         model = Order
         fields = '__all__'
+        exclude = ['note']
 
 
 class CreateUserForm(UserCreationForm):
