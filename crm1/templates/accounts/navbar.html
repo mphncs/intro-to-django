@@ -22,12 +22,14 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        {% if request.user.is_staff %}
-            <div class="navbar-nav">
+        <div class="navbar-nav">
+            {% if request.user.is_staff %}
                 <a class="nav-item nav-link active" href="{% url 'home' %}">Dashboard</a>
                 <a class="nav-item nav-link" href="{% url 'products' %}">Products</a>
-            </div>
-        {% endif %}
+            {% else %}
+                <a class="nav-item nav-link active" href="{% url 'account' %}">Account Settings</a>
+            {% endif %}
+        </div>
     </div>
     <span class="hello-msg">Hello, <span>{{ request.user }}</span></span>
     <a class="btn btn-sm btn-danger" href="{% url 'logout' %}">Log Out</a>
