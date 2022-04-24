@@ -6,25 +6,29 @@
         color: #fff;
         margin-right: 20px;
     }
-    
+
     .hello-msg > span {
         font-style: italic;
     }
 </style>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a href="{% url 'home' %}">
-      <img class="navbar-brand" alt="logo-brand" src="{% static 'images/logo.png' %}" height="50" style="padding-bottom: 0.05rem"/>
-  </a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-    <div class="navbar-nav">
-      <a class="nav-item nav-link active" href="{% url 'home' %}">Dashboard</a>
-      <a class="nav-item nav-link" href="{% url 'products' %}">Products</a>
+    <a href="{% url 'home' %}">
+        <img class="navbar-brand" alt="logo-brand" src="{% static 'images/logo.png' %}" height="50"
+             style="padding-bottom: 0.05rem"/>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        {% if request.user.is_staff %}
+            <div class="navbar-nav">
+                <a class="nav-item nav-link active" href="{% url 'home' %}">Dashboard</a>
+                <a class="nav-item nav-link" href="{% url 'products' %}">Products</a>
+            </div>
+        {% endif %}
     </div>
-  </div>
     <span class="hello-msg">Hello, <span>{{ request.user }}</span></span>
     <a class="btn btn-sm btn-danger" href="{% url 'logout' %}">Log Out</a>
 </nav>
